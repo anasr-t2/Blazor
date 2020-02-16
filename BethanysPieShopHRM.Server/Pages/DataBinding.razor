@@ -1,0 +1,35 @@
+﻿@page "/databinding"
+@inherits DataBindingBase
+
+<h3>DataBinding</h3>
+
+<div>
+    <h2>One Way</h2>
+    Employee First Name: <label>@Employee.FirstName</label>
+    Employee Last Name: <label>@Employee.LastName</label>
+</div>
+
+<div>
+    <h2>One Way Form Control</h2>
+    Employee First Name: <input value="@Employee.FirstName" />
+    Employee Last Name: <input value="@Employee.LastName" />
+</div>
+
+
+<div>
+    <h2>Two Way Form Control</h2>
+    Employee First Name: <input @bind="@Employee.FirstName" />
+    Employee Last Name: <input @bind="@Employee.LastName" />
+</div>
+
+<div>
+    <h2>Two Way Form Control on input</h2>
+    Employee First Name: <input @bind-value="@Employee.FirstName" @bind-value:event="oninput"/>
+    Employee Last Name: <input @bind-value="@Employee.LastName" @bind-value:event="oninput" />
+</div>
+
+<div>
+    <h2>Two Way Form code</h2>
+   
+    <button @onclick="@(()=>ChangeEmpFirstName("wewewe"))">Click</button>
+</div>

@@ -1,0 +1,29 @@
+﻿using BethanysPieShopHRM.Shared;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+namespace BethanysPieShopHRM.Server.Services
+{
+    public class JobCategoryService : IJobCategoryService
+    {
+        private readonly HttpClient _httpClient;
+        public JobCategoryService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        public async Task<IEnumerable<JobCategory>> GetAllJobCategories()
+        {
+            return await JsonSerializer.DeserializeAsync<IEnumerable<JobCategory>>(await _httpClient.GetStreamAsync("api/JobCategory"),new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
+        }
+
+        public async Task<JobCategory> GetJobCategoryById(int jobCategoryId)
+        {
+            return await JsonSerializer.DeserializeAsync<JobCategory>(await _httpClient.GetStreamAsync($"api/JobCategory/{jobCategoryId}"), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+    }
+}

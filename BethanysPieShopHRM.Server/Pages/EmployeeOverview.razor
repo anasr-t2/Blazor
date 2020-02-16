@@ -1,0 +1,43 @@
+﻿@page "/employeeoverview"
+@inherits EmployeeOverviewBase
+
+
+<h1 class="page-title">All employees</h1>
+
+
+
+@if (Employees != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Employee ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in Employees)
+            {
+                <tr>
+                    <td><img src="@($"https://gillcleerenpluralsight.blob.core.windows.net/person/{emp.EmployeeId}-small.jpg")" class="rounded-circle" /></td>
+                    <td>@emp.EmployeeId</td>
+                    <td>@emp.FirstName</td>
+                    <td>@emp.LastName</td>
+                    <td>
+                        <a href="@($"employeeDetails/{emp.EmployeeId}")" class="btn btn-primary table-btn"><i class="fas fa-info-circle"></i></a>
+                        <a href="@($"employee/edit/{emp.EmployeeId}")" class="btn btn-primary table-btn"><i class="fas fa-edit"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+<button class="btn btn-dark table-btn quick-add-btn" @onclick="QuickAddEmployee">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+<AddEmployeeDialog @ref="QuickAddEmployeeDialog" CloseEventCallBack="AddEmployeeDialog_OnDialogClose"></AddEmployeeDialog>

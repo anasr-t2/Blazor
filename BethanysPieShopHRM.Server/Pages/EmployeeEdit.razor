@@ -1,0 +1,148 @@
+﻿@page "/employee/add"
+@page "/employee/edit/{EmployeeId:int}"
+
+@inherits EmployeeEditBase
+@using BethanysPieShopHRM.Shared
+
+    <section class="employee-detail">
+        @if (!saved)
+        {
+            <h1 class="page-title">Details For @Employee.FirstName @Employee.LastName</h1>
+
+            <EditForm Model="@Employee" OnValidSubmit="@HandleValidSubmit">
+
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+
+                <div class="form-group row">
+                    <label for="firstName" class="col-sm-3">First name: </label>
+                    <InputText id="firstName" class="form-control col-sm-8" @bind-Value="@Employee.FirstName" placeholder="Enter first name"></InputText>
+                    <ValidationMessage class="offse-sm-3 col-sm-8" For="() => Employee.FirstName"></ValidationMessage>
+                </div>
+
+                <div class="form-group row">
+                    <label for="lastName" class="col-sm-3">Last Name: </label>
+                    <InputText id="lastName" class="form-control col-sm-8" @bind-Value="@Employee.LastName" placeholder="Enter Last Name"></InputText>
+                    <ValidationMessage class="offse-sm-3 col-sm-8" For="() => Employee.LastName"></ValidationMessage>
+
+                </div>
+
+                <div class="form-group row">
+                    <label for="birthdate" class="col-sm-3">Birthdate: </label>
+                    <InputDate id="birthdate" class="form-control col-sm-8" @bind-Value="@Employee.BirthDate" placeholder="Enter birthdate"></InputDate>
+                    <ValidationMessage class="offse-sm-3 col-sm-8" For="() => Employee.BirthDate"></ValidationMessage>
+
+                </div>
+
+                <div class="form-group row">
+                    <label for="email" class="col-sm-3">Email: </label>
+                    <InputText id="email" class="form-control col-sm-8" @bind-Value="@Employee.Email" placeholder="Enter email"></InputText>
+                    <ValidationMessage class="offse-sm-3 col-sm-8" For="() => Employee.Email"></ValidationMessage>
+
+                </div>
+
+                <div class="form-group row">
+                    <label for="jobCategory" class="col-sm-3">Job Category: </label>
+                    <InputSelect class="form-control col-sm-8" @bind-Value="@SelectedJobCategoryId">
+                        <option value="0">Please Select a Job Category</option>
+                        @foreach (var jobCategory in JobCategories)
+                            {
+                            <option value="@jobCategory.JobCategoryId">@jobCategory.JobCategoryName</option>
+                            }
+                    </InputSelect>
+                </div>
+
+                <div class="form-group row">
+                    <label for="country" class="col-sm-3">Country: </label>
+                    <InputSelect id="country" class="form-control col-sm-8" @bind-Value="@SelectedCountryId">
+                        <option value="0">Please Select a Country</option>
+                        @foreach (var country in Countries)
+                            {
+                            <option value="@country.CountryId">@country.Name</option>
+                            }
+                    </InputSelect>
+                </div>
+
+                <div class="form-group row">
+                    <label for="city" class="col-sm-3">City: </label>
+                    <InputText id="city" class="form-control col-sm-8" @bind-Value="@Employee.City" placeholder="Enter city"></InputText>
+                </div>
+
+                <div class="form-group row">
+                    <label for="street" class="col-sm-3">Street: </label>
+                    <InputText id="street" class="form-control col-sm-8" @bind-Value="@Employee.Street" placeholder="Enter street"></InputText>
+                </div>
+
+                <div class="form-group row">
+                    <label for="zip" class="col-sm-3">Zip code: </label>
+                    <InputText id="zip" class="form-control col-sm-8" @bind-Value="@Employee.Zip" placeholder="Enter zip code"></InputText>
+                </div>
+
+                <div class="form-group row">
+                    <label for="phonenumber" class="col-sm-3">Phone number: </label>
+                    <InputText id="phonenumber" class="form-control col-sm-8" @bind-Value="@Employee.PhoneNumber" placeholder="Enter phone number"></InputText>
+                </div>
+
+                <div class="form-group row">
+                    <label for="longitude" class="col-sm-3">Longitude: </label>
+                    <InputNumber id="longitude" class="form-control col-sm-8" @bind-Value="@Employee.Longitude"></InputNumber>
+                </div>
+
+                <div class="form-group row">
+                    <label for="latitude" class="col-sm-3">Latitude: </label>
+                    <InputNumber id="latitude" class="form-control col-sm-8" @bind-Value="@Employee.Latitude"></InputNumber>
+                </div>
+
+                <div class="form-group row">
+                    <label for="smoker" class=" offset-sm-3">
+                        <InputCheckbox id="smoker" @bind-Value="@Employee.Smoker"></InputCheckbox>
+                        &nbsp;Smoker
+                    </label>
+                </div>
+
+                <div class="form-group row">
+                    <label for="gender" class="col-sm-3">Gender: </label>
+                    @foreach (var gender in Enum.GetValues(typeof(Gender)))
+                    {
+                        <input type="radio" name="gender" checked="@(Employee.Gender == (Gender)gender)" @onchange="@(() => Employee.Gender = (Gender)gender)" />@gender
+                    }
+                </div>
+
+                <div class="form-group row">
+                    <label for="maritalStatus" class="col-sm-3">Marital Status: </label>
+                    @foreach (var status in Enum.GetValues(typeof(MaritalStatus)))
+                    {
+                        <input type="radio" name="maritalStatus" checked="@(Employee.MaritalStatus == (MaritalStatus)status)" @onchange="@(() => Employee.MaritalStatus = (MaritalStatus)status)" />@status
+                    }
+                </div>
+
+                <div class="form-group row">
+                    <label for="joinDate" class="col-sm-3">Join Date: </label>
+                    <InputDate id="joinDate" name="joinDate" class="form-control col-sm-8" @bind-Value="@Employee.JoinedDate" placeholder="Enter Join Date"></InputDate>
+                </div>
+
+                <div class="form-group row">
+                    <label for="exitDate" class="col-sm-3">Exit Date: </label>
+                    <InputDate id="exitDate" class="form-control col-sm-8" @bind-Value="@Employee.ExitDate" placeholder="Enter Exit Date"></InputDate>
+                </div>
+
+                <div class="form-group row">
+                    <label for="comment" class="col-sm-3">Comment: </label>
+                    <InputTextArea id="comment" class="form-control col-sm-8" @bind-Value="@Employee.Comment" placeholder="Enter comment"></InputTextArea>
+                </div>
+                @*<button @onclick="Hamada">click</button>*@
+
+                <button type="submit" class="btn btn-primary edit-btn">Save</button>
+                @if(Employee.EmployeeId > 0)
+                {
+                    <a class="btn btn-danger" @onclick="@DeleteEmployee">Delete</a>
+                }
+            </EditForm>
+        }
+        else
+        {
+            <div class="alert @StatusClass">@Message</div>
+            <a class="btn btn-outline-primary" @onclick="@NavigateToOverview">Back to Overview</a>
+        }
+
+    </section>
